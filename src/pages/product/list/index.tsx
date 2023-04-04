@@ -23,7 +23,9 @@ const ProductList: FC = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const location = useLocation();
-  const [selectedSupplierId, setSupplierId] = useState<number | null>(null);
+  const [selectedSupplierId, setSupplierId] = useState<number | null>(() => {
+    return Number(searchParams.get("contact")) || null;
+  });
   const [products, setProducts] = useState<Array<IProduct>>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [pagination, setPagination] = useState<PaginateDataType>({

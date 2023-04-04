@@ -36,7 +36,12 @@ const SupplierSearchTypeAhead = ({
 
   useEffect(() => {
     const fetchSuppliers = async () => {
-      const queryObj = searchValue ? { search: searchValue } : {};
+      let queryObj: Record<string, any> = searchValue
+        ? { search: searchValue }
+        : {};
+      if (preSelectedSupplierId) {
+        queryObj = { ...queryObj, id: preSelectedSupplierId };
+      }
       try {
         const response = await suppliersList({
           query: queryObj,
@@ -47,19 +52,18 @@ const SupplierSearchTypeAhead = ({
       }
     };
     fetchSuppliers();
-  }, [searchValue]);
+  }, [searchValue, preSelectedSupplierId]);
 
   useEffect(() => {
     if (preSelectedSupplierId) {
       const result = searchResults.filter(
         (item) => item.id === preSelectedSupplierId
       );
-      console.log(preSelectedSupplierId, searchResults);
-      if (result) {
+      if (result.length > 0) {
         setSelectedContact(result[0]);
       }
     }
-  }, [preSelectedSupplierId, searchResults]);
+  }, [preSelectedSupplierId, searchResults, searchResults.length]);
 
   return (
     <Dropdown
